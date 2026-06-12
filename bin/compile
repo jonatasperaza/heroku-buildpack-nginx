@@ -21,7 +21,7 @@ suppress() {
 BUILD_DIR=$1
 CACHE_DIR=$2
 CUR_DIR=$(cd "$(dirname "$0")" && cd .. && pwd)
-SIGIL_CACHE_DIR="${CACHE_DIR}/sigil"
+SIGIL_CACHE_FILE="${CACHE_DIR}/sigil-${SIGIL_VERSION}"
 
 mkdir -p "$BUILD_DIR" "$CACHE_DIR"
 
@@ -48,15 +48,15 @@ fi
 
 cd "$CACHE_DIR"
 
-mkdir -p "$BUILD_DIR/sigil" "$SIGIL_CACHE_DIR"
+mkdir -p "$BUILD_DIR/sigil"
 
-if [[ ! -f "$SIGIL_CACHE_DIR/sigil-${SIGIL_VERSION}" ]]; then
+if [[ ! -f "$SIGIL_CACHE_FILE" ]]; then
   echo "-----> Download and cache sigil ${SIGIL_VERSION} via http"
-  curl -fsSL "https://github.com/gliderlabs/sigil/releases/download/v${SIGIL_VERSION}/sigil-linux-amd64" -o "$SIGIL_CACHE_DIR/sigil-${SIGIL_VERSION}"
+  curl -fsSL "https://github.com/gliderlabs/sigil/releases/download/v${SIGIL_VERSION}/sigil-linux-amd64" -o "$SIGIL_CACHE_FILE"
+  chmod +x "$SIGIL_CACHE_FILE"
 fi
 
-chmod +x "$SIGIL_CACHE_DIR/sigil-${SIGIL_VERSION}"
-cp "$SIGIL_CACHE_DIR/sigil-${SIGIL_VERSION}" "$BUILD_DIR/sigil/sigil-${SIGIL_VERSION}"
+cp "$SIGIL_CACHE_FILE" "$BUILD_DIR/sigil/sigil-${SIGIL_VERSION}"
 cp "$BUILD_DIR/sigil/sigil-${SIGIL_VERSION}" "$BUILD_DIR/sigil/sigil"
 chmod +x "$BUILD_DIR/sigil/sigil"
 
